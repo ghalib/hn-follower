@@ -62,6 +62,19 @@ class DB(object):
         for comment in comments:
             self.store(comment)
 
+    def add_user(self, session_id, user):
+        """Given a user to follow, adds it to the list of follow
+        targets"""
+        if self.r.zscore(session_id, user) is None:
+            order = self.r.zcard(session_id)
+            self.r.zadd(session_id, order, user)
+            return True
+        else:
+            return False
+
+    def get_users(self, session_id):
+        return self.r.zrange(session_id, 0, -1)
+
     def get_comments(self, user):
         """Given a username key, returns a list of comments from
         Redis, sorted by time posted to HN in most to least-recent."""

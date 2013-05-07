@@ -41,9 +41,10 @@ $(function() {
         
         createUser: function(e) {
             e.preventDefault(); // Prevent page reload on submit
-            if (!this.input.val()) return;
+            var user = this.input.val();
+            if (!user) return;
             
-            Users.create({name: this.input.val()});
+            Users.create({name: user}, {wait: true});
             this.input.val('');
         }
     
