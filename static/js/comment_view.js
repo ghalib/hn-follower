@@ -50,6 +50,7 @@ $(function() {
     
     });
     var App = new AppView();
+    console.log(JSON.stringify(Users));
 });
 
 
