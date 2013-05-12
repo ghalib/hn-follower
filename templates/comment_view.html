@@ -6,15 +6,10 @@
     <link href="/static/bootstrap/css/bootstrap.min.css"
           rel="stylesheet" media="screen">
   </head>
-  <script src="/static/jquery/jquery.min.js"></script>
-  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
-  <script src="/static/backbone/underscore.js"></script>
-  <script src="/static/backbone/backbone.js"></script>
-  <script src="/static/js/comment_view.js"></script>
   <body>
     <div class="container" id="app">
       <div class="page-header">
-	<h1> HN Follower</h1>
+	<h1>HN Follower</h1>
       </div>
       <div class="tabbable tabs-left">
         <form id="add-user" class="form-inline">
@@ -25,29 +20,28 @@
 	<ul class="span2 nav nav-tabs" id="user-list">
           {% for user in users %}
           <li>
-            <a href="#{{ user }}" data-toggle="tab">{{ user }}</a>
+            <a href="#{{ user }}" class="user" data-toggle="tab">{{ user }}</a>
           </li>
           {% end %}
 	</ul>
 	<div class="tab-content well">
 	  <div class="tab-pane" id="tab1">
 	    <ul>
-<!--               <li class="comment">Hello I like Lisp.</li> -->
-<!--               <li class="comment">You should put startup</li> -->
+              <!--               <li class="comment">Hello I like Lisp.</li> -->
+              <!--               <li class="comment">You should put startup</li> -->
             </ul>
 	  </div>
 	</div>
       </div>
     </div>
-
+    <script src="/static/jquery/jquery.min.js"></script>
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/backbone/underscore.js"></script>
+    <script src="/static/backbone/backbone.js"></script>
+    <script src="/static/js/comment_view.js"></script>
     <!-- Templates -->
-
     <script type="text/template" id="user-template">
-      <a href="#tab1" data-toggle="tab"><%= name %></a>
-    </script>
-    <script>
-      <!-- Initialise Users Collection -->
-      Users.reset({{ json_encode([{xhtml_unescape("name"):xhtml_unescape(user)} for user in users]) }})
+      <a href="#<%= name %>" class="user" data-toggle="tab"><%= name %></a>
     </script>
   </body>
 </html>
