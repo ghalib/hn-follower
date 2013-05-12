@@ -32,6 +32,14 @@ $(function() {
         initialize: function() {
             this.input = this.$("input");
             this.listenTo(Users, 'add', this.addUser);
+
+            // Populate Users from the page instead of making an Ajax
+            // call.
+            var userCollection = $(".user").map(function() {
+                var name = $(this).text();
+                return {"name": name};
+            }).get();
+            Users.reset(userCollection);
         },
         
         addUser: function(user) {
@@ -41,7 +49,7 @@ $(function() {
         
         createUser: function(e) {
             e.preventDefault(); // Prevent page reload on submit
-            var user = this.input.val();
+            var user = this.input.val().trim();
             if (!user) return;
             
             Users.create({name: user}, {wait: true});

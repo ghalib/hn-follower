@@ -7,7 +7,6 @@ import hn
 import database
 
 DB = database.DB()
-USERS = DB.r.keys()
 
 def read_users(usersfile):
     users = []
@@ -23,8 +22,10 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         session_id = "me"
         users = self.db.get_users(session_id)
-        self.render('comment_view.html', users=users)
+        self.render('comment_view.html', compress_whitespace=True,
+                    users=users)
 
+@tornado.web.asynchronous
 class UserHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
@@ -38,14 +39,6 @@ class UserHandler(tornado.web.RequestHandler):
         # is returned
         self.write({"user": user})
 
-class UserSupplier(tornado.web.RequestHandler):
-    def initialize(self, users):
-        self.users = users
-
-    def get(self):
-        userdict = {'users': self.users}
-        self.write(userdict)
-
 class CommentSupplier(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
@@ -56,7 +49,6 @@ class CommentSupplier(tornado.web.RequestHandler):
 
 application = tornado.web.Application([
     (r'/', MainHandler, dict(db=DB)),
-    (r'/get_all_users', UserSupplier, dict(users=USERS)),
     (r'/get_comments/(\w+)', CommentSupplier, dict(db=DB)),
     (r'/users', UserHandler, dict(db=DB))
 ],
