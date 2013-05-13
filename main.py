@@ -29,7 +29,6 @@ class UserHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
         
-    @tornado.web.asynchronous
     def post(self):
         j = tornado.escape.json_decode(self.request.body)
         user = j['name']
