@@ -51,7 +51,6 @@ $(function() {
             e.preventDefault(); // Prevent page reload on submit
             var user = this.input.val().trim();
             if (!user) return;
-            
             Users.create({name: user}, {wait: true});
             this.input.val('');
         }

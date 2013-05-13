@@ -1,0 +1,4 @@
+redis==2.7.4
+requests==1.2.0
+tornado==3.0.1
+wsgiref==0.1.2

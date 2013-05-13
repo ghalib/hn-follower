@@ -25,7 +25,6 @@ class MainHandler(tornado.web.RequestHandler):
         self.render('comment_view.html', compress_whitespace=True,
                     users=users)
 
-@tornado.web.asynchronous
 class UserHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
@@ -45,7 +44,7 @@ class CommentSupplier(tornado.web.RequestHandler):
 
     def get(self, user):
         # TODO: jsonify as with UserSupplier
-        return db.get_comments(user)
+        return self.db.get_comments(user)
 
 application = tornado.web.Application([
     (r'/', MainHandler, dict(db=DB)),
