@@ -10,6 +10,12 @@ $(function() {
         url: '/users'
     });
     
+    UserList.prototype.contains = function(name) {
+        return this.any(function(_user) {
+            return _user.get("name") === name;
+        });
+    };
+
     var UserView = Backbone.View.extend({
         tagName: "li",
         template: _.template($('#user-template').html()),
@@ -34,7 +40,7 @@ $(function() {
             this.listenTo(Users, 'add', this.addUser);
 
             // Populate Users from the page instead of making an Ajax
-            // call.
+            // call
             var userCollection = $(".user").map(function() {
                 var name = $(this).text();
                 return {"name": name};
@@ -50,9 +56,10 @@ $(function() {
         createUser: function(e) {
             e.preventDefault(); // Prevent page reload on submit
             var user = this.input.val().trim();
-            if (!user) return;
-            Users.create({name: user}, {wait: true});
             this.input.val('');
+            if (!user || Users.contains(user)) return;
+
+            Users.create({name: user}, {wait: true});
         }
     
     });
