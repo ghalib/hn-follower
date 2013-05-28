@@ -39,3 +39,16 @@ def get_most_recent_comments(user):
                       results),
                   key=lambda comment: comment.create_ts)
 
+def get_user(user):
+    """Returns a dictionary of the user's information if they exist"""
+    api_url = 'http://api.thriftdb.com/api.hnsearch.com/users/_search?'
+
+    params = {'filter[fields][username]': user,
+              'limit': '1',
+              'pretty_print': 'true'}
+    
+    results = requests.get(api_url +
+                           params_dict_to_str(params)).json()["results"]
+
+    return results[0]["item"] if len(results) > 0 else None
+
