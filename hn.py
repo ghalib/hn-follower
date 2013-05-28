@@ -22,7 +22,7 @@ def get_hn_items(params):
     """Perform a search query for certain iteams, returning JSON
     result as dict."""
     api_url = 'http://api.thriftdb.com/api.hnsearch.com/items/_search?'
-    j = requests.get(api_url + params_dict_to_str(params)).json
+    j = requests.get(api_url + params_dict_to_str(params)).json()
     return j
 
 def get_most_recent_comments(user):
@@ -38,4 +38,17 @@ def get_most_recent_comments(user):
     return sorted(map(lambda result: Comment(result['item']),
                       results),
                   key=lambda comment: comment.create_ts)
+
+def user_exists(user):
+    """Returns a dictionary of the user's information if they exist"""
+    api_url = 'http://api.thriftdb.com/api.hnsearch.com/users/_search?'
+
+    params = {'filter[fields][username]': user,
+              'limit': '1',
+              'pretty_print': 'true'}
+    
+    results = requests.get(api_url +
+                           params_dict_to_str(params)).json()["results"]
+
+    return len(results) > 0
 
