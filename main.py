@@ -32,7 +32,10 @@ class UserHandler(tornado.web.RequestHandler):
     def post(self):
         j = tornado.escape.json_decode(self.request.body)
         user = j['name']
+    
         self.db.add_user("me", user)
+        self.db.store_all(hn.get_most_recent_comments(user))
+
         # backbone.js's Collection's {wait: true} won't add the model
         # to the collection with an empty HTTP 200; only if JSON data
         # is returned
