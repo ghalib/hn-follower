@@ -30,6 +30,10 @@ class UserHandler(tornado.web.RequestHandler):
         self.db = db
         
     def put(self, user):
+        if not hn.get_user(user):
+            # TODO: error response?
+            return
+
         self.db.add_user("me", user)
         self.db.store_all(hn.get_most_recent_comments(user))
 
