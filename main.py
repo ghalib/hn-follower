@@ -29,9 +29,7 @@ class UserHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
         
-    def post(self):
-        j = tornado.escape.json_decode(self.request.body)
-        user = j['name']
+    def put(self, user):
         self.db.add_user("me", user)
         # backbone.js's Collection's {wait: true} won't add the model
         # to the collection with an empty HTTP 200; only if JSON data
@@ -48,8 +46,8 @@ class CommentSupplier(tornado.web.RequestHandler):
 
 application = tornado.web.Application([
     (r'/', MainHandler, dict(db=DB)),
-    (r'/get_comments/(\w+)', CommentSupplier, dict(db=DB)),
-    (r'/users', UserHandler, dict(db=DB))
+    (r'/comments/(\w+)', CommentSupplier, dict(db=DB)),
+    (r'/users/(\w+)', UserHandler, dict(db=DB))
 ],
 template_path='templates',
 static_path='static', 

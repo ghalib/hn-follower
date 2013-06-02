@@ -2,7 +2,8 @@ $(function() {
     var User = Backbone.Model.extend({
         defaults: {
             name: ""
-        }
+        },
+        idAttribute: "name"
     });
     
     var UserList = Backbone.Collection.extend({
