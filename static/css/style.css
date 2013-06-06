@@ -1,4 +1,8 @@
+.user {
+    font-family: Calibri, "Helvetica Nueue", Helvetica, sans-serif;
+    font-size: 25px;
+}
+
 .comment {
-    font-family: 'Karla', sans-serif;
-    font-size: 20px;
+    font-size: 14px;
 }
