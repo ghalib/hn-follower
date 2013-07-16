@@ -1,3 +1,5 @@
+import sys
+
 import tornado.ioloop
 import tornado.web
 import tornado.escape
@@ -7,6 +9,7 @@ import hn
 import database
 
 DB = database.DB()
+SESSION_ID = "me"
 
 def read_users(usersfile):
     users = []
@@ -20,8 +23,7 @@ class MainHandler(tornado.web.RequestHandler):
         self.db = db
 
     def get(self):
-        session_id = "me"
-        users = self.db.get_users(session_id)
+        users = self.db.get_users(SESSION_ID)
         self.render('comment_view.html', compress_whitespace=True,
                     users=users)
 
@@ -30,11 +32,11 @@ class UserHandler(tornado.web.RequestHandler):
         self.db = db
         
     def put(self, user):
-        if not hn.get_user(user):
-            # TODO: error response?
+        if not hn.user_exists(user):
+            sys.stderr.write("User '%s' does not exist\n" % user)
             return
 
-        self.db.add_user("me", user)
+        self.db.add_user(SESSION_ID, user)
         self.db.store_all(hn.get_most_recent_comments(user))
 
         # backbone.js's Collection's {wait: true} won't add the model
