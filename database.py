@@ -72,6 +72,10 @@ class DB(object):
         else:
             return False
 
+    def del_user(self, session_id, user):
+        self.r.zrem(session_id, user)
+        return True
+
     def get_users(self, session_id):
         return self.r.zrange(session_id, 0, -1)
 

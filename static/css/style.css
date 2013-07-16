@@ -3,6 +3,30 @@
     font-size: 25px;
 }
 
+#user-list li {
+    position: relative;
+}
+
+#user-list .destroy {
+    position: absolute;
+    height: 4px;
+    left: 198px;
+    top: 10px;
+    display: none;
+    min-width: 0px;
+    border: 0px;
+    cursor: pointer;
+    background: url(/static/img/destroy.png) no-repeat;
+}
+
+#user-list li:hover .destroy {
+    display: block;
+}
+
+#user-list .destroy:hover {
+    background-position: 0 -20px;
+}
+
 .comment {
     font-size: 14px;
 }
