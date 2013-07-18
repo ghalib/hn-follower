@@ -44,6 +44,10 @@ class UserHandler(tornado.web.RequestHandler):
         # is returned
         self.write({"user": user})
 
+    def delete(self, user):
+        self.db.del_user(SESSION_ID, user)
+        self.write({"user": user})
+
 class CommentSupplier(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
