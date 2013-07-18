@@ -22,6 +22,7 @@
           {% for user in users %}
           <li>
             <a href="#{{ user }}" class="user" data-toggle="tab">{{ user }}</a>
+            <a class="destroy"></a>
           </li>
           {% end %}
 	</ul>
@@ -43,6 +44,7 @@
     <!-- Templates -->
     <script type="text/template" id="user-template">
       <a href="#<%= name %>" class="user" data-toggle="tab"><%= name %></a>
+      <a class="destroy"></a>
     </script>
   </body>
 </html>
