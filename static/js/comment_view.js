@@ -36,7 +36,10 @@ $(function() {
         },
 
         clear: function() {
-            this.model.destroy();
+            var m = this.model;
+            this.$el.fadeOut(400, function() {
+                m.destroy();
+            });
         }
     });
     
