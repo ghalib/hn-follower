@@ -7,6 +7,7 @@
     position: relative;
 }
 
+/* By default, hide the delete-hacker button */
 #user-list .destroy {
     position: absolute;
     height: 4px;
@@ -19,10 +20,12 @@
     background: url(/static/img/destroy.png) no-repeat;
 }
 
+/* Show the delete-hacker button when hovering over a hacker */
 #user-list li:hover .destroy {
     display: block;
 }
 
+/* Darken the delete-hacker button when hovering over it */
 #user-list .destroy:hover {
     background-position: 0 -20px;
 }
