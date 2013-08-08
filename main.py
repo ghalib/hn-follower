@@ -2,8 +2,8 @@ import sys
 
 import tornado.ioloop
 import tornado.web
-import tornado.escape
 import tornado.httpserver
+from tornado.escape import json_encode
 
 import hn
 import database
@@ -23,14 +23,12 @@ class MainHandler(tornado.web.RequestHandler):
         self.db = db
 
     def get(self):
-        users = self.db.get_users(SESSION_ID)
-        self.render('comment_view.html', compress_whitespace=True,
-                    users=users)
+        self.render('comment_view.html', compress_whitespace=True)
 
 class UserHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
-        
+
     def put(self, user):
         if not hn.user_exists(user):
             sys.stderr.write("User '%s' does not exist\n" % user)
@@ -48,6 +46,20 @@ class UserHandler(tornado.web.RequestHandler):
         self.db.del_user(SESSION_ID, user)
         self.write({"user": user})
 
+class UserSupplier(tornado.web.RequestHandler):
+    def initialize(self, db):
+        self.db = db
+
+    def get(self):
+        users = self.db.get_users(SESSION_ID)
+        if users:
+            self.write(self._userlist_to_json(users))
+        
+    def _userlist_to_json(self, users):
+        """Convert Python list of users into backbone.js model JSON"""
+        userlist = [{"name": user} for user in users]
+        return json_encode(userlist)
+        
 class CommentSupplier(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
@@ -59,7 +71,8 @@ class CommentSupplier(tornado.web.RequestHandler):
 application = tornado.web.Application([
     (r'/', MainHandler, dict(db=DB)),
     (r'/comments/(\w+)', CommentSupplier, dict(db=DB)),
-    (r'/users/(\w+)', UserHandler, dict(db=DB))
+    (r'/users/(\w+)', UserHandler, dict(db=DB)),
+    (r'/users', UserSupplier, dict(db=DB))
 ],
 template_path='templates',
 static_path='static', 
