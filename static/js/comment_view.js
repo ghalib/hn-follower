@@ -55,14 +55,9 @@ $(function() {
         initialize: function() {
             this.input = this.$("input");
             this.listenTo(Users, 'add', this.addUser);
+            this.listenTo(Users, 'reset', this.addAllUsers);
 
-            // Populate Users from the page instead of making an Ajax
-            // call
-            var userCollection = $(".user").map(function() {
-                var name = $(this).text();
-                return {"name": name};
-            }).get();
-            Users.reset(userCollection);
+            Users.fetch();
         },
         
         addUser: function(user) {
@@ -70,12 +65,17 @@ $(function() {
             this.$("#user-list").append(view.render().el);
         },
         
+        addAllUsers: function() {
+            Users.each(this.addUser, this);
+        },
+
         createUser: function(e) {
             e.preventDefault(); // Prevent page reload on submit
             var user = this.input.val().trim();
             this.input.val('');
             if (!user || Users.contains(user)) return;
-
+            // {wait: true} means don't create a view in browser until
+            // we get a response from server
             Users.create({name: user}, {wait: true});
         }
     
