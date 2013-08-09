@@ -11,13 +11,6 @@ import database
 DB = database.DB()
 SESSION_ID = "me"
 
-def read_users(usersfile):
-    users = []
-    for line in open(usersfile):
-        user = line.strip()
-        users.append(user)
-    return users
-
 class MainHandler(tornado.web.RequestHandler):
     def initialize(self, db):
         self.db = db
