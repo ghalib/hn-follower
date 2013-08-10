@@ -58,8 +58,14 @@ class CommentSupplier(tornado.web.RequestHandler):
         self.db = db
 
     def get(self, user):
-        # TODO: jsonify as with UserSupplier
-        return self.db.get_comments(user)
+        # Temporarily, always get the newest comments straight from HN
+        # rather than our DB. This will change when we implement
+        # automatic periodic DB comment-population
+
+        # comments = self.db.get_comments(user)
+        comments = hn.get_most_recent_comments(user)
+        comment_models = [comment.to_backbone() for comment in comments]
+        self.write(json_encode(comment_models))
 
 application = tornado.web.Application([
     (r'/', MainHandler, dict(db=DB)),

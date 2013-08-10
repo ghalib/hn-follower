@@ -21,12 +21,6 @@
 	<ul class="span3 nav nav-tabs" id="user-list">
 	</ul>
 	<div class="tab-content well">
-	  <div class="tab-pane" id="pg">
-	    <ul>
-              <li class="comment">Hello I like Lisp.</li>
-              <li class="comment">You should put startup</li>
-            </ul>
-	  </div>
 	</div>
       </div>
     </div>
@@ -39,6 +33,10 @@
     <script type="text/template" id="user-template">
       <a href="#<%= name %>" class="user" data-toggle="tab"><%= name %></a>
       <a class="destroy"></a>
+    </script>
+    <script type="text/template" id="comment-list-template">
+      <ul>
+      </ul>
     </script>
   </body>
 </html>
