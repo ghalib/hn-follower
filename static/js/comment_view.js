@@ -3,6 +3,7 @@ $(function() {
         defaults: {
             name: ""
         },
+
         idAttribute: "name"
     });
     
@@ -11,6 +12,26 @@ $(function() {
         url: '/users'
     });
     
+    var Comment = Backbone.Model.extend({
+        defaults: {
+            author: "",
+            text: "",
+            date: ""
+        }
+    });
+
+    var CommentList = Backbone.Collection.extend({
+        model: Comment,
+
+        initialize: function(models, options) {
+            this.author = options.author;
+        },
+
+        url: function() {
+            return '/comments/' + this.author;
+        }
+    });
+
     UserList.prototype.contains = function(name) {
         return this.any(function(_user) {
             return _user.get("name") === name;
@@ -63,6 +84,16 @@ $(function() {
         }
     });
 
+    var CommentView = Backbone.View.extend({
+        tagName: "li",
+
+        render: function() {
+            this.$el.html(this.model.get('text'));
+            return this;
+        }
+
+    });
+
     var Users = new UserList();
     
     var AppView = Backbone.View.extend({
@@ -85,10 +116,25 @@ $(function() {
             this.$("#user-list").append(userView.render().el);
             var commentListView = new CommentListView({model: user});
             this.$(".tab-content").append(commentListView.render().el);
+            this.addAllComments(user);
         },
         
         addAllUsers: function() {
             Users.each(this.addUser, this);
+        },
+
+        addComment: function(comment) {
+            var commentView = new CommentView({model: comment});
+            var commentListNode = $("#" + comment.get("author") + " ul");
+            commentListNode.append(commentView.render().el);
+        },
+
+        addAllComments: function(user) {
+            var comments = new CommentList([], {author: user.get("name")});
+            addComment = this.addComment;
+            comments.fetch({success: function() {
+                comments.each(addComment, this);
+            }});
         },
 
         createUser: function(e) {

@@ -58,8 +58,9 @@ class CommentSupplier(tornado.web.RequestHandler):
         self.db = db
 
     def get(self, user):
-        # TODO: jsonify as with UserSupplier
-        return self.db.get_comments(user)
+        comments = self.db.get_comments(user)
+        comment_models = [comment.to_backbone() for comment in comments]
+        self.write(json_encode(comment_models))
 
 application = tornado.web.Application([
     (r'/', MainHandler, dict(db=DB)),

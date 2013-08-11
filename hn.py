@@ -11,6 +11,12 @@ class Comment:
         self.discussion = item['discussion']
         self.create_ts = item['create_ts']
 
+    def to_backbone(self):
+        """Convert comment to backbone.js model"""
+        return {'author': self.user,
+                'text': self.text,
+                'date': self.create_ts}
+
     def __str__(self):
         return "%s: %s : Posted on %s" % (self.user,
                                           self.text, self.create_ts)
