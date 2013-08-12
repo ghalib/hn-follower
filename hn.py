@@ -31,14 +31,14 @@ def get_hn_items(params):
     j = requests.get(api_url + params_dict_to_str(params)).json()
     return j
 
-def get_most_recent_comments(user):
+def get_most_recent_comments(user, num_comments=10):
     """Returns the 100 most recent comments by USER, sorted by time
     posted (newest to oldest), in the form of a list containing
     Comment objects."""
     params = {'filter[fields][type]': 'comment',
               'filter[fields][username]': user,
               'sortby': 'create_ts desc',
-              'limit': '100',
+              'limit': str(num_comments),
               'pretty_print': 'true'}
     results = get_hn_items(params)['results']
     return sorted(map(lambda result: Comment(result['item']),
