@@ -43,7 +43,8 @@ def get_most_recent_comments(user):
     results = get_hn_items(params)['results']
     return sorted(map(lambda result: Comment(result['item']),
                       results),
-                  key=lambda comment: comment.create_ts)
+                  key=lambda comment: comment.create_ts,
+                  reverse=True)
 
 def user_exists(user):
     """Returns a dictionary of the user's information if they exist"""
