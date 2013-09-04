@@ -16,7 +16,8 @@ $(function() {
         defaults: {
             author: "",
             text: "",
-            date: ""
+            date: "",
+            parent: null
         }
     });
 
